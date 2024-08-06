@@ -13,9 +13,15 @@ function App() {
 
   useEffect(() => {
     fetch("http://127.0.0.1:5555/messages")
-      .then((r) => r.json())
+      .then((r) => {
+        if (r.ok) {
+          return r.json()
+        }
+        throw r;
+      })
       .then((messages) => setMessages(messages));
-  }, []);
+  }, []); 
+  // dependency array => tells useEffect to only run fetch() an async operation on the first render of App.
 
   function handleAddMessage(newMessage) {
     setMessages([...messages, newMessage]);
